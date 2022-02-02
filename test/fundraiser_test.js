@@ -67,4 +67,38 @@ contract("Fundraiser", accounts => {
             }
         });
     });
+
+    describe("making donations", ()=>{
+        const value = web3.utils.toWei('0.02889');
+        const donor = accounts[2];
+
+        it("increases myDonationsCount", async () => {
+            const currentDonationsCount = await fundraiser.myDonationsCount(
+                {from: donor}
+            );
+
+            await fundraiser.donate({from: donor, value});
+
+            const newDonationsCount = await fundraiser.myDonationsCount(
+                {from: donor}
+            );
+
+            assert.equal(
+                1,
+                newDonationsCount - currentDonationsCount,
+                "myDonationsCount should increment by 1"
+            );
+        });
+        it("includes donation in myDonations", async ()=>{
+            await fundraiser.donate({from: donor, value});
+            const {values, dates} = await fundraiser.myDonations(
+                {from: donor}
+            );
+            assert.equal(
+                value,
+                values[0],
+                "values should match"
+            );
+        });
+    });
 });
