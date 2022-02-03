@@ -100,5 +100,26 @@ contract("Fundraiser", accounts => {
                 "values should match"
             );
         });
+        it("increases the totalDopnations amount", async () => {
+            const currentTotalDonations = await fundraiser.totalDonations();
+            await fundraiser.donate({from: donor, value});
+            const newTotalDonations = await fundraiser.totalDonations();
+
+            const diff = newTotalDonations - currentTotalDonations;
+
+            assert.equal(
+                diff, 
+                value,
+                "difference should match the donation value"
+            );
+        });
+        
+        it("emits the DonationReceived event", async ()=>{
+            const tx = await fundraiser.donate({from: donor,value});
+            const expectedEvent = "DonationReceived";
+            const actualEvent = tx.logs[0].event;
+
+            assert.equal(actualEvent, exptectedEvent, "events should match");
+        })
     });
 });
