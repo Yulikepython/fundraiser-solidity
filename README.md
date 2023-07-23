@@ -1,2 +1,4 @@
-SOLIDITY FUNDRAISER TUTORIAL
+### SOLIDITYチュートリアル：FUNDRAISER
+
+Solidityを学習した際のコードです。
 
